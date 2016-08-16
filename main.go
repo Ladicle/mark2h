@@ -8,6 +8,7 @@ import (
 	"html/template"
 )
 
+const templatePath = "assets/markdown.html"
 const usage = `
 usage: ./mark2h [-sh] filePath
 
@@ -40,13 +41,13 @@ func main(){
 	}
 	html := blackfriday.MarkdownCommon(data)
 
-	tpl, err := ioutil.ReadFile("markdown.html")
+	tpl, err := Asset(templatePath)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	t := template.Must(template.New("markdown").Parse(string(tpl)))
+	t := template.Must(template.New(templatePath).Parse(string(tpl)))
 	if err = t.Execute(os.Stdout, template.HTML(string(html))); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
